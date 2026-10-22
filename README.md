@@ -13,11 +13,21 @@ A simple MERN-stack Human Resource Management System built as a SkillWallet caps
 
 ```
 StaffSync/
-├── client/          # React frontend (Vite)
-├── server/          # Express backend
-│   ├── index.js     # Server entry point
-│   ├── .env         # Environment variables (not committed)
-│   └── .env.example # Example env file
+├── client/                     # React frontend (Vite)
+│   └── src/
+│       ├── api/axiosConfig.js  # Pre-configured Axios instance
+│       ├── App.jsx
+│       └── main.jsx
+├── server/                     # Express backend
+│   ├── controllers/
+│   │   └── employeeController.js
+│   ├── models/
+│   │   └── Employee.js
+│   ├── routes/
+│   │   └── employeeRoutes.js
+│   ├── index.js                # Server entry point
+│   ├── .env                    # Environment variables (not committed)
+│   └── .env.example
 ├── .gitignore
 └── README.md
 ```
@@ -26,18 +36,30 @@ StaffSync/
 
 ### Prerequisites
 - Node.js v18+
-- MongoDB running locally or a MongoDB Atlas URI
+- MongoDB running locally **or** a MongoDB Atlas URI
 
 ### 1. Clone the repo
 ```bash
-git clone <repo-url>
+git clone https://github.com/krishnammandloi/StaffSync.git
 cd StaffSync
 ```
 
 ### 2. Setup the Backend
 ```bash
 cd server
-cp .env.example .env    # Then edit .env with your MongoDB URI
+copy .env.example .env
+```
+
+Edit `server/.env` and set your MongoDB URI:
+```
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/staffsync
+# OR for Atlas:
+# MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/staffsync
+```
+
+Then install and run:
+```bash
 npm install
 npm run dev
 ```
@@ -53,12 +75,59 @@ npm run dev
 
 The client runs at **http://localhost:5173**
 
-### 4. Health Check
-Visit **http://localhost:5000/api/health** to verify the backend is running and connected to MongoDB.
+---
+
+## API Endpoints
+
+Base URL: `http://localhost:5000/api`
+
+### Health Check
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Server + DB status |
+
+### Employees
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/employees` | List all employees |
+| GET | `/employees/:id` | Get single employee |
+| POST | `/employees` | Create employee |
+| PUT | `/employees/:id` | Update employee |
+| DELETE | `/employees/:id` | Delete employee |
+
+### POST /api/employees — Required Body
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "department": "Engineering",
+  "jobTitle": "Software Engineer",
+  "phone": "9876543210",
+  "joiningDate": "2024-01-15"
+}
+```
+
+### Sample Response
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "...",
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "department": "Engineering",
+    "jobTitle": "Software Engineer",
+    "phone": "9876543210",
+    "joiningDate": "2024-01-15T00:00:00.000Z",
+    "createdAt": "...",
+    "updatedAt": "..."
+  }
+}
+```
 
 ## Environment Variables
 
-| Variable    | Description                    | Default                                   |
-|-------------|--------------------------------|-------------------------------------------|
-| `PORT`      | Backend server port            | `5000`                                    |
-| `MONGO_URI` | MongoDB connection string      | `mongodb://localhost:27017/staffsync`     |
+| Variable    | Description               | Default                               |
+|-------------|---------------------------|---------------------------------------|
+| `PORT`      | Backend server port       | `5000`                                |
+| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017/staffsync` |
