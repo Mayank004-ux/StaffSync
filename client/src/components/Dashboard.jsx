@@ -1,0 +1,175 @@
+import { useState, useEffect } from 'react'
+import API from '../api/axiosConfig'
+
+function Dashboard({ onNavigate }) {
+  const [employees, setEmployees] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    API.get('/employees')
+      .then((res) => setEmployees(res.data.data || []))
+      .catch(() => setError('Could not load employee data. Make sure the backend is running.'))
+      .finally(() => setLoading(false))
+  }, [])
+
+  // Department breakdown
+  const deptMap = employees.reduce((acc, emp) => {
+    acc[emp.department] = (acc[emp.department] || 0) + 1
+    return acc
+  }, {})
+  const departments = Object.entries(deptMap).sort((a, b) => b[1] - a[1])
+
+  // Recent hires (last 3)
+  const recent = [...employees]
+    .sort((a, b) => new Date(b.joiningDate) - new Date(a.joiningDate))
+    .slice(0, 3)
+
+  const initials = (name) =>
+    name ? name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2) : '?'
+
+  return (
+    <div>
+      <div className="page-header">
+        <h2>Dashboard</h2>
+        <p>Welcome back — here's your workforce overview</p>
+      </div>
+
+      {error && <div className="alert-box error">{error}</div>}
+
+      {loading ? (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading data…</p>
+        </div>
+      ) : (
+        <>
+          {/* Stat Cards */}
+          <div className="row g-3 mb-4">
+            <div className="col-sm-6 col-lg-3">
+              <div className="stat-card">
+                <div className="stat-icon purple">👥</div>
+                <div className="stat-info">
+                  <h3>{employees.length}</h3>
+                  <p>Total Employees</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6 col-lg-3">
+              <div className="stat-card">
+                <div className="stat-icon blue">🏢</div>
+                <div className="stat-info">
+                  <h3>{departments.length}</h3>
+                  <p>Departments</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6 col-lg-3">
+              <div className="stat-card">
+                <div className="stat-icon green">🆕</div>
+                <div className="stat-info">
+                  <h3>
+                    {employees.filter((e) => {
+                      const d = new Date(e.joiningDate)
+                      const now = new Date()
+                      return (
+                        d.getMonth() === now.getMonth() &&
+                        d.getFullYear() === now.getFullYear()
+                      )
+                    }).length}
+                  </h3>
+                  <p>Joined This Month</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6 col-lg-3">
+              <div className="stat-card">
+                <div className="stat-icon orange">💼</div>
+                <div className="stat-info">
+                  <h3>{departments[0]?.[0] || '—'}</h3>
+                  <p>Largest Department</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row g-3">
+            {/* Department Breakdown */}
+            <div className="col-lg-6">
+              <div className="table-card">
+                <div className="table-card-header">
+                  <h5>Department Breakdown</h5>
+                </div>
+                <div style={{ padding: '16px 20px' }}>
+                  {departments.length === 0 ? (
+                    <p className="text-center text-muted py-3">No data yet</p>
+                  ) : (
+                    <ul className="dept-list">
+                      {departments.map(([dept, count]) => (
+                        <li key={dept}>
+                          <span style={{ minWidth: '110px' }}>{dept}</span>
+                          <div className="dept-bar-bg">
+                            <div
+                              className="dept-bar-fill"
+                              style={{ width: `${(count / employees.length) * 100}%` }}
+                            />
+                          </div>
+                          <span className="dept-count">{count}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Hires */}
+            <div className="col-lg-6">
+              <div className="table-card">
+                <div className="table-card-header">
+                  <h5>Recent Hires</h5>
+                  <button className="btn-primary-custom" onClick={() => onNavigate('employees')}>
+                    View All
+                  </button>
+                </div>
+                <div>
+                  {recent.length === 0 ? (
+                    <div className="empty-state" style={{ padding: '30px' }}>
+                      <p>No employees yet</p>
+                    </div>
+                  ) : (
+                    recent.map((emp) => (
+                      <div
+                        key={emp._id}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '12px',
+                          padding: '12px 20px',
+                          borderBottom: '1px solid var(--border)',
+                        }}
+                      >
+                        <div className="avatar">{initials(emp.name)}</div>
+                        <div>
+                          <div style={{ fontWeight: 500, fontSize: '0.9rem' }}>{emp.name}</div>
+                          <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                            {emp.jobTitle} · {emp.department}
+                          </div>
+                        </div>
+                        <div style={{ marginLeft: 'auto', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                          {new Date(emp.joiningDate).toLocaleDateString()}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default Dashboard
