@@ -1,7 +1,10 @@
 function Sidebar({ currentPage, setCurrentPage }) {
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'employees', label: 'Employees', icon: '👥' },
+    { id: 'dashboard',     label: 'Dashboard',     icon: '📊' },
+    { id: 'employees',     label: 'Employees',     icon: '👥' },
+    { id: 'attendance',    label: 'Attendance',    icon: '📅' },
+    { id: 'leaves',        label: 'Leave Requests', icon: '🗓️' },
+    { id: 'announcements', label: 'Announcements', icon: '📢' },
   ]
 
   return (
