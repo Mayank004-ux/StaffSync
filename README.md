@@ -175,3 +175,51 @@ Base URL: `http://localhost:5000/api`
 6. **Database Persistence**
    - Fully connected and verified with MongoDB Atlas.
    - Mongoose data models with validation and constraints.
+
+---
+
+## Deployment Guide (Online Production)
+
+### 1. MongoDB Atlas Setup
+1. In your MongoDB Atlas Dashboard, go to **Network Access** under **Security**.
+2. Click **Add IP Address** and select **Allow Access from Anywhere (`0.0.0.0/0`)** so cloud hosts like Render can connect.
+3. In **Database Access**, verify your database user has read/write privileges.
+4. Copy your connection string from **Database → Connect → Drivers**.
+
+---
+
+### 2. Backend Deployment on Render
+1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New → Web Service**.
+2. Connect your GitHub repository: `https://github.com/krishnammandloi/StaffSync`.
+3. Configure the service settings:
+   - **Name:** `staffsync-api` (or your choice)
+   - **Region:** Any close region (e.g., Oregon, Frankfurt, Singapore)
+   - **Root Directory:** `server`
+   - **Runtime:** `Node`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+4. Under **Environment Variables**, add:
+   - `MONGO_URI`: `mongodb+srv://<username>:<password>@<cluster>.mongodb.net/staffsync?retryWrites=true&w=majority`
+   - `CLIENT_URL`: `https://<your-vercel-app-name>.vercel.app` *(Optional, can be added after frontend deployment)*
+5. Click **Deploy Web Service**.
+6. When deployment finishes, copy your Render live service URL:  
+   `https://staffsync-api.onrender.com`  
+   Test health: `https://staffsync-api.onrender.com/api/health`
+
+---
+
+### 3. Frontend Deployment on Vercel
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New → Project**.
+2. Import the `krishnammandloi/StaffSync` repository.
+3. Configure project settings:
+   - **Framework Preset:** `Vite`
+   - **Root Directory:** Click Edit and select `client`
+   - **Build Command:** `npm run build` *(default)*
+   - **Output Directory:** `dist` *(default)*
+   - **Install Command:** `npm install` *(default)*
+4. Under **Environment Variables**, add:
+   - `VITE_API_URL`: `https://staffsync-api.onrender.com/api` *(Replace with your Render backend URL)*
+5. Click **Deploy**.
+6. Once deployed, open your live Vercel URL (e.g., `https://staffsync-client.vercel.app`).
+7. *(Optional Polish)*: In Render, update the `CLIENT_URL` environment variable with your Vercel URL to restrict CORS to your production frontend.
+
