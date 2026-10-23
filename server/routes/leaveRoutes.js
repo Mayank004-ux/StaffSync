@@ -9,6 +9,6 @@ const {
 
 router.route('/').get(getLeaves).post(createLeave);
 router.route('/:id').delete(deleteLeave);
-router.route('/:id/status').put(updateLeaveStatus);
+router.route('/:id/status').put(updateLeaveStatus).patch(updateLeaveStatus);
 
 module.exports = router;

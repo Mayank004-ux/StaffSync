@@ -16,12 +16,12 @@ function Attendance() {
   const [success, setSuccess] = useState('')
 
   // Form state
-  const [form, setForm] = useState({
+  const [form, setForm] = useState(() => ({
     employee: '',
     date: new Date().toISOString().split('T')[0],
     status: 'Present',
     note: '',
-  })
+  }))
   const [formErrors, setFormErrors] = useState({})
 
   // Filters

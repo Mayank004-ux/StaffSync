@@ -35,7 +35,7 @@ const updateAnnouncement = async (req, res) => {
     const announcement = await Announcement.findByIdAndUpdate(
       req.params.id,
       { title, message, date },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!announcement) {
       return res.status(404).json({ success: false, message: 'Announcement not found' });

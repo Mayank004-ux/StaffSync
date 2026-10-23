@@ -1,16 +1,33 @@
 import { useState, useEffect } from 'react'
 
-function EmployeeForm({ employee, onSubmit, onClose, loading }) {
-  const empty = {
-    name: '',
-    email: '',
-    department: '',
-    jobTitle: '',
-    phone: '',
-    joiningDate: '',
-  }
+const EMPTY_FORM = {
+  name: '',
+  email: '',
+  department: '',
+  jobTitle: '',
+  phone: '',
+  joiningDate: '',
+}
 
-  const [form, setForm] = useState(empty)
+function FormField({ name, label, type = 'text', placeholder, value, onChange, error }) {
+  return (
+    <div className="form-group">
+      <label className="form-label">{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`form-control-custom ${error ? 'error' : ''}`}
+      />
+      {error && <p className="form-error">{error}</p>}
+    </div>
+  )
+}
+
+function EmployeeForm({ employee, onSubmit, onClose, loading }) {
+  const [form, setForm] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})
 
   // Pre-fill form when editing
@@ -27,7 +44,7 @@ function EmployeeForm({ employee, onSubmit, onClose, loading }) {
           : '',
       })
     } else {
-      setForm(empty)
+      setForm(EMPTY_FORM)
     }
   }, [employee])
 
@@ -58,21 +75,6 @@ function EmployeeForm({ employee, onSubmit, onClose, loading }) {
     onSubmit(form)
   }
 
-  const Field = ({ name, label, type = 'text', placeholder }) => (
-    <div className="form-group">
-      <label className="form-label">{label}</label>
-      <input
-        type={type}
-        name={name}
-        value={form[name]}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className={`form-control-custom ${errors[name] ? 'error' : ''}`}
-      />
-      {errors[name] && <p className="form-error">{errors[name]}</p>}
-    </div>
-  )
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
@@ -83,12 +85,12 @@ function EmployeeForm({ employee, onSubmit, onClose, loading }) {
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
             <div className="form-grid">
-              <Field name="name" label="Full Name" placeholder="Jane Doe" />
-              <Field name="email" label="Email" type="email" placeholder="jane@example.com" />
-              <Field name="department" label="Department" placeholder="Engineering" />
-              <Field name="jobTitle" label="Job Title" placeholder="Software Engineer" />
-              <Field name="phone" label="Phone" placeholder="9876543210" />
-              <Field name="joiningDate" label="Joining Date" type="date" />
+              <FormField name="name" label="Full Name" placeholder="Jane Doe" value={form.name} onChange={handleChange} error={errors.name} />
+              <FormField name="email" label="Email" type="email" placeholder="jane@example.com" value={form.email} onChange={handleChange} error={errors.email} />
+              <FormField name="department" label="Department" placeholder="Engineering" value={form.department} onChange={handleChange} error={errors.department} />
+              <FormField name="jobTitle" label="Job Title" placeholder="Software Engineer" value={form.jobTitle} onChange={handleChange} error={errors.jobTitle} />
+              <FormField name="phone" label="Phone" placeholder="9876543210" value={form.phone} onChange={handleChange} error={errors.phone} />
+              <FormField name="joiningDate" label="Joining Date" type="date" value={form.joiningDate} onChange={handleChange} error={errors.joiningDate} />
             </div>
           </div>
           <div className="modal-footer">

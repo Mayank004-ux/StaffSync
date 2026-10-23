@@ -64,7 +64,7 @@ const updateAttendance = async (req, res) => {
     const record = await Attendance.findByIdAndUpdate(
       req.params.id,
       { status, note },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).populate('employee', 'name department jobTitle');
 
     if (!record) {

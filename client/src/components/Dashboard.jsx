@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import API from '../api/axiosConfig'
 
 function Dashboard({ onNavigate }) {
@@ -27,6 +27,17 @@ function Dashboard({ onNavigate }) {
   const recent = [...employees]
     .sort((a, b) => new Date(b.joiningDate) - new Date(a.joiningDate))
     .slice(0, 3)
+
+  const joinedThisMonthCount = useMemo(() => {
+    const now = new Date()
+    const currentMonth = now.getMonth()
+    const currentYear = now.getFullYear()
+    return employees.filter((e) => {
+      if (!e.joiningDate) return false
+      const d = new Date(e.joiningDate)
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear
+    }).length
+  }, [employees])
 
   const initials = (name) =>
     name ? name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2) : '?'
@@ -65,10 +76,7 @@ function Dashboard({ onNavigate }) {
               <div className="stat-card">
                 <div className="stat-icon green">🆕</div>
                 <div className="stat-info">
-                  <h3>{employees.filter((e) => {
-                    const d = new Date(e.joiningDate), now = new Date()
-                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
-                  }).length}</h3>
+                  <h3>{joinedThisMonthCount}</h3>
                   <p>Joined This Month</p>
                 </div>
               </div>

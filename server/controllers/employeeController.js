@@ -66,7 +66,7 @@ const updateEmployee = async (req, res) => {
     const employee = await Employee.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!employee) {
       return res.status(404).json({ success: false, message: 'Employee not found' });

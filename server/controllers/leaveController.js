@@ -74,7 +74,7 @@ const updateLeaveStatus = async (req, res) => {
     const leave = await Leave.findByIdAndUpdate(
       req.params.id,
       { status, reviewNote: reviewNote || '' },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).populate('employee', 'name department jobTitle');
 
     if (!leave) {
