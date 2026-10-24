@@ -64,7 +64,7 @@ StaffSync/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/krishnammandloi/StaffSync.git
+git clone https://github.com/Mayank004-ux/StaffSync.git
 cd StaffSync
 ```
 
@@ -190,7 +190,7 @@ Base URL: `http://localhost:5000/api`
 
 ### 2. Backend Deployment on Render
 1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New → Web Service**.
-2. Connect your GitHub repository: `https://github.com/krishnammandloi/StaffSync`.
+2. Connect your GitHub repository: `https://github.com/Mayank004-ux/StaffSync`.
 3. Configure the service settings:
    - **Name:** `staffsync-api` (or your choice)
    - **Region:** Any close region (e.g., Oregon, Frankfurt, Singapore)
@@ -210,7 +210,7 @@ Base URL: `http://localhost:5000/api`
 
 ### 3. Frontend Deployment on Vercel
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New → Project**.
-2. Import the `krishnammandloi/StaffSync` repository.
+2. Import the `Mayank004-ux/StaffSync` repository.
 3. Configure project settings:
    - **Framework Preset:** `Vite`
    - **Root Directory:** Click Edit and select `client`
