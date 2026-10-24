@@ -1,6 +1,15 @@
 # StaffSync — HR Management System
 
-A MERN-stack Human Resource Management System built as a SkillWallet capstone project.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-staff--sync--delta.vercel.app-brightgreen?style=for-the-badge&logo=vercel)](https://staff-sync-delta.vercel.app/)
+[![Backend API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render)](https://staffsync-uw4p.onrender.com/api/health)
+[![Database](https://img.shields.io/badge/Database-MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/atlas)
+
+A full-stack MERN Human Resource Management System built by [Mayank Khare](https://github.com/Mayank004-ux).
+
+### 🌐 Live Deployment
+- **Frontend (Vercel):** [https://staff-sync-delta.vercel.app/](https://staff-sync-delta.vercel.app/)
+- **Backend API (Render):** [https://staffsync-uw4p.onrender.com](https://staffsync-uw4p.onrender.com)
+- **API Health Check:** [https://staffsync-uw4p.onrender.com/api/health](https://staffsync-uw4p.onrender.com/api/health)
 
 ## Tech Stack
 
@@ -218,8 +227,8 @@ Base URL: `http://localhost:5000/api`
    - **Output Directory:** `dist` *(default)*
    - **Install Command:** `npm install` *(default)*
 4. Under **Environment Variables**, add:
-   - `VITE_API_URL`: `https://staffsync-api.onrender.com/api` *(Replace with your Render backend URL)*
+   - `VITE_API_URL`: `https://staffsync-uw4p.onrender.com/api`
 5. Click **Deploy**.
-6. Once deployed, open your live Vercel URL (e.g., `https://staffsync-client.vercel.app`).
-7. *(Optional Polish)*: In Render, update the `CLIENT_URL` environment variable with your Vercel URL to restrict CORS to your production frontend.
+6. Once deployed, open your live Vercel URL: [https://staff-sync-delta.vercel.app/](https://staff-sync-delta.vercel.app/).
+7. *(Optional Polish)*: In Render, update the `CLIENT_URL` environment variable with `https://staff-sync-delta.vercel.app` to restrict CORS to your production frontend.
 
