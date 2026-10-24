@@ -203,8 +203,8 @@ Base URL: `http://localhost:5000/api`
    - `CLIENT_URL`: `https://<your-vercel-app-name>.vercel.app` *(Optional, can be added after frontend deployment)*
 5. Click **Deploy Web Service**.
 6. When deployment finishes, copy your Render live service URL:  
-   `https://staffsync-api.onrender.com`  
-   Test health: `https://staffsync-api.onrender.com/api/health`
+   `https://staffsync-uw4p.onrender.com`  
+   Test health: `https://staffsync-uw4p.onrender.com/api/health`
 
 ---
 
